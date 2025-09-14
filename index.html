@@ -481,7 +481,9 @@
 {id:"p8-17", tenseId:8, en:"He had been reading for a while when he fell asleep.",   hu:"Egy ideje olvasott, amikor elaludt.",                 cloze:"He ____ ______ ______ (read) for a while when he fell asleep.",   answers:["had been reading"],   variants:[]},
 {id:"p8-18", tenseId:8, en:"I had been learning French before I switched to German.",hu:"Franciát tanultam, mielőtt németre váltottam.",      cloze:"I ____ ______ ______ (learn) French before I switched to German.", answers:["had been learning"],  variants:[]},
 {id:"p8-19", tenseId:8, en:"They had been repairing the road all week.",             hu:"Egész héten az utat javították.",                     cloze:"They ____ ______ ______ (repair) the road all week.",             answers:["had been repairing"], variants:[]},
-{id:"p8-20", tenseId:8, en:"She had been practicing yoga before the class began.",   hu:"Jógázott, mielőtt az óra elkezdődött.",               cloze:"She ____ ______ ______ (practice) yoga before the class began.",  answers:["had been practicing"],variants:[]},
+{id:"p8-20", tenseId:8, en:"She had been practicing yoga before the class began.",   hu:"Jógázott, mielőtt az óra elkezdődött.",               cloze:"She ____ ______ ______ (practice) yoga before the class began.",  answers:["had been practicing"],variants:[]},];
+
+
 
   // ---------------------- Helpers ----------------------
   const $ = sel => document.querySelector(sel);
@@ -628,7 +630,7 @@
     wrap.innerHTML = CHEAT.map(c=>`
       <div class="cs-item">
         <h3><span class="tense-num">${c.num})</span> ${c.nameEn} <span class="muted">(${c.nameHu})</span></h3>
-        <p><strong>Képzés (EN):</strong> ${c.formEn}</p>
+        <p><strong>Képzés (EN):</strong> ${c.formEn ?? ''}</p>
         <p><strong>Képzés (HU):</strong> ${c.formHu}</p>
         <p><strong>Jelzőszavak:</strong> <span class="muted">${c.signalsEn}</span> <span class="muted">/ ${c.signalsHu}</span></p>
         ${c.examples.map(ex=>`<p>• <em>${ex.en}</em> — ${ex.hu}</p>`).join('')}
@@ -672,9 +674,9 @@
       const input = normalize($('#igyInput').value);
       if(!input) return;
       const okSet = [
-        ...this.current.answers.map(normalize),
-        ...this.current.variants.map(v=>normalize(v.replace(/’/g,"'")))
-      ];
+  ...this.current.answers.map(normalize),
+  ...((this.current.variants || []).map(v => normalize(v.replace(/’/g, "'"))))
+];
       if(okSet.includes(input)){
         $('#igyFeedback').innerHTML = `<span class=\"ok\">Mr. Susu says: Well done!</span>`;
         Stats.bumpCorrect('igy');
@@ -707,9 +709,9 @@
       const input = normalize($('#clozeInput').value);
       if(!input) return;
       const okSet = [
-        ...this.current.answers.map(normalize),
-        ...this.current.variants.map(v=>normalize(v.replace(/’/g,"'")))
-      ];
+  ...this.current.answers.map(normalize),
+  ...((this.current.variants || []).map(v => normalize(v.replace(/’/g, "'"))))
+];
       if(okSet.includes(input)){
         $('#clozeFeedback').innerHTML = `<span class="ok">Mr. Susu says: Well done!</span>`;
         Stats.bumpCorrect('cloze');
